@@ -6,11 +6,14 @@ import {
   InputBase,
   InputBaseProps,
   InputLabel,
+  Typography,
   alpha,
   styled,
 } from "@mui/material";
+import { red } from "@mui/material/colors";
 import { ChangeEvent, useState } from "react";
 import { GetAccountResponse } from "../api/account/[steamID]/route";
+import ResultsTable from "../components/ResultsTable";
 import { useAppDispatch, useAppSelector } from "../state/hooks";
 import { getPlayerSummaryThunk } from "../state/middleware/userSearchThunks";
 import palette from "../theme/palette";
@@ -58,6 +61,7 @@ export default function About() {
   const dispatch = useAppDispatch();
 
   const loading: boolean = useAppSelector((state) => state.search.loading);
+  const error: boolean = useAppSelector((state) => state.search.error);
   const searchResults: GetAccountResponse = useAppSelector(
     (state) => state.search.results
   );
@@ -79,17 +83,20 @@ export default function About() {
       sx={{
         flexGrow: 1,
         display: "flex",
+        flexDirection: "column",
         justifyContent: "center",
+        alignItems: "center",
       }}
     >
       <Box
         sx={{
-          width: "40em",
+          width: "70%",
           height: "20em",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
+          paddingBottom: "5rem",
         }}
       >
         <FormControl variant="standard">
@@ -108,6 +115,11 @@ export default function About() {
             onChange={onSearchFieldInput}
           />
         </FormControl>
+        {!!error && (
+          <Typography sx={{ color: red[400] }}>
+            Could not find a player with given ID.
+          </Typography>
+        )}
         <Button
           variant="contained"
           sx={{ marginTop: "1rem" }}
@@ -116,6 +128,14 @@ export default function About() {
         >
           Search
         </Button>
+      </Box>
+      <Box
+        sx={{
+          width: "70%",
+          height: "20em",
+        }}
+      >
+        {!!searchResults && <ResultsTable />}
       </Box>
     </Box>
   );

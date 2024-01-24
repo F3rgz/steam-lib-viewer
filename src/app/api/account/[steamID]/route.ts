@@ -41,7 +41,7 @@ export async function GET(req: NextRequest, context: any) {
 
     let mostPlayedGame: Game | null = null;
     let totalGameTime: number = 0;
-    responseJSON.response.games.forEach((game) => {
+    responseJSON.response?.games?.forEach((game) => {
       if (
         !mostPlayedGame ||
         game.playtime_forever > mostPlayedGame.playtime_forever
