@@ -2,7 +2,15 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-First, run the development server:
+```bash
+npm install
+# or
+yarn
+# or
+pnpm install
+```
+
+Then, run the development server:
 
 ```bash
 npm run dev
@@ -10,8 +18,14 @@ npm run dev
 yarn dev
 # or
 pnpm dev
-# or
-bun dev
+```
+
+or, run the application:
+
+```bash
+npm run build
+# then
+npm run start
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
