@@ -1,6 +1,7 @@
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import StoreProvider from "./StoreProvider";
 import Header from "./components/Header";
 import "./globals.css";
 
@@ -23,7 +24,9 @@ export default function RootLayout({
       </head>
       <body className={inter.className}>
         <Header title="User Search" />
-        <AppRouterCacheProvider>{children}</AppRouterCacheProvider>
+        <StoreProvider>
+          <AppRouterCacheProvider>{children}</AppRouterCacheProvider>
+        </StoreProvider>
       </body>
     </html>
   );
