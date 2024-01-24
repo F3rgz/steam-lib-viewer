@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { red } from "@mui/material/colors";
 import { ChangeEvent, useState } from "react";
-import { GetAccountResponse } from "../api/account/[steamID]/route";
+import { GetAccountResponse } from "../api/account/[steamID]/interface";
 import ResultsTable from "../components/ResultsTable";
 import { useAppDispatch, useAppSelector } from "../state/hooks";
 import { getPlayerSummaryThunk } from "../state/middleware/userSearchThunks";

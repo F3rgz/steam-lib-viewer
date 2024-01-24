@@ -1,4 +1,4 @@
-import { GetAccountResponse } from "../../api/account/[steamID]/route";
+import { GetAccountResponse } from "../../api/account/[steamID]/interface";
 
 export enum SEARCH_ACTIONS {
   GET_PLAYER_SUMMARY = "SEARCH/GET_PLAYER_SUMMARY",

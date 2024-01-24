@@ -8,7 +8,7 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { GetAccountResponse } from "../api/account/[steamID]/route";
+import { GetAccountResponse } from "../api/account/[steamID]/interface";
 import { useAppSelector } from "../state/hooks";
 
 export default function ResultsTable() {

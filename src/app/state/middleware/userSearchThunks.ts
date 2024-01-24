@@ -1,4 +1,4 @@
-import { GetAccountResponse } from "@/app/api/account/[steamID]/route";
+import { GetAccountResponse } from "@/app/api/account/[steamID]/interface";
 import { Dispatch } from "redux";
 import {
   getPlayerSummaryComplete,
