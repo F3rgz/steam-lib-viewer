@@ -13,7 +13,7 @@ import {
 import { red } from "@mui/material/colors";
 import { ChangeEvent, useState } from "react";
 import { GetAccountResponse } from "../api/account/[steamID]/interface";
-import ResultsTable from "../components/ResultsTable";
+import ResultsCard from "../components/ResultsCard";
 import { useAppDispatch, useAppSelector } from "../state/hooks";
 import { getPlayerSummaryThunk } from "../state/middleware/userSearchThunks";
 import palette from "../theme/palette";
@@ -57,6 +57,12 @@ const StyledInput = styled(InputBase)<InputBaseProps>(() => ({
   },
 }));
 
+enum StatsCategories {
+  MOST_PLAYED,
+  TOTAL_PLAYTIME,
+  NUMBER_OF_GAMES,
+}
+
 export default function About() {
   const dispatch = useAppDispatch();
 
@@ -78,6 +84,41 @@ export default function About() {
     dispatch(getPlayerSummaryThunk(inputText));
   };
 
+  const getCardTitle = (category: StatsCategories): string => {
+    switch (category) {
+      case StatsCategories.MOST_PLAYED:
+        // Use i18n etc
+        return "Most Played Game";
+      case StatsCategories.NUMBER_OF_GAMES:
+        return "Number of Games";
+      case StatsCategories.TOTAL_PLAYTIME:
+        return "Total Playtime";
+      default:
+        return "";
+    }
+  };
+
+  const getSteamContentUrl = (
+    contentId: string | undefined
+  ): string | undefined => {
+    if (!contentId) return undefined;
+    return `https://avatars.cloudflare.steamstatic.com/${contentId}_full.jpg`;
+  };
+
+  const getSubtitle = (category: StatsCategories): string => {
+    switch (category) {
+      case StatsCategories.MOST_PLAYED:
+        // Use i18n etc
+        return searchResults?.most_played_game?.name ?? "N/A";
+      case StatsCategories.NUMBER_OF_GAMES:
+        return searchResults?.games?.length?.toString() ?? "N/A";
+      case StatsCategories.TOTAL_PLAYTIME:
+        return searchResults?.total_playtime?.toString() ?? "N/A";
+      default:
+        return "";
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -91,12 +132,11 @@ export default function About() {
       <Box
         sx={{
           width: "70%",
-          height: "20em",
+          height: "15em",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
-          paddingBottom: "5rem",
         }}
       >
         <FormControl variant="standard">
@@ -129,14 +169,45 @@ export default function About() {
           Search
         </Button>
       </Box>
-      <Box
-        sx={{
-          width: "70%",
-          height: "20em",
-        }}
-      >
-        {!!searchResults && <ResultsTable />}
-      </Box>
+      {!!searchResults && (
+        <Box
+          sx={{
+            width: "60%",
+            height: "20em",
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-around",
+            gap: "4em",
+            paddingBottom: "1rem",
+          }}
+        >
+          {/* {!!searchResults && <ResultsTable />} */}
+
+          <ResultsCard
+            title={getCardTitle(StatsCategories.NUMBER_OF_GAMES)}
+            subtitle={getSubtitle(StatsCategories.NUMBER_OF_GAMES)}
+            style={{ flex: "1 1 0px", height: "20rem" }}
+          ></ResultsCard>
+          <ResultsCard
+            title={getCardTitle(StatsCategories.MOST_PLAYED)}
+            subtitle={getSubtitle(StatsCategories.MOST_PLAYED)}
+            style={{
+              flex: "1 1 0px",
+              marginTop: "1rem",
+              height: "20rem",
+              scale: 1.2,
+            }}
+            imageUrl={getSteamContentUrl(
+              searchResults?.most_played_game?.img_icon_url
+            )}
+          ></ResultsCard>
+          <ResultsCard
+            title={getCardTitle(StatsCategories.TOTAL_PLAYTIME)}
+            subtitle={getSubtitle(StatsCategories.TOTAL_PLAYTIME)}
+            style={{ flex: "1 1 0px", height: "20rem" }}
+          ></ResultsCard>
+        </Box>
+      )}
     </Box>
   );
 }

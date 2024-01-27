@@ -13,6 +13,7 @@ export interface Game {
   appid: number;
   playtime_forever: number;
   name: string;
+  img_icon_url: string;
 }
 
 export interface GetAccountResponse {
