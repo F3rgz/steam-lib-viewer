@@ -11,6 +11,7 @@ import {
   styled,
 } from "@mui/material";
 import { red } from "@mui/material/colors";
+import { AnimatePresence, motion } from "framer-motion";
 import { ChangeEvent, useState } from "react";
 import { GetAccountResponse } from "../api/account/[steamID]/interface";
 import ResultsCard from "../components/ResultsCard";
@@ -25,9 +26,9 @@ const StyledInput = styled(InputBase)<InputBaseProps>(() => ({
   "& .MuiInputBase-input": {
     borderRadius: 4,
     position: "relative",
-    backgroundColor: palette.background,
+    backgroundColor: palette.dark,
     border: "1px solid",
-    borderColor: palette.light,
+    borderColor: alpha(palette.dark, -0.1),
     fontSize: 16,
     width: "100%",
     padding: "10px 12px",
@@ -151,6 +152,7 @@ export default function About() {
             id="outlined-basic"
             sx={{
               width: "20em",
+              backgroundColor: palette.dark,
             }}
             onChange={onSearchFieldInput}
           />
@@ -169,45 +171,53 @@ export default function About() {
           Search
         </Button>
       </Box>
-      {!!searchResults && (
-        <Box
-          sx={{
-            width: "60%",
-            height: "20em",
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-around",
-            gap: "4em",
-            paddingBottom: "1rem",
-          }}
-        >
-          {/* {!!searchResults && <ResultsTable />} */}
+      <AnimatePresence>
+        {!!searchResults && (
+          <motion.div
+            initial={{ opacity: 0, y: 200 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 200 }}
+          >
+            <Box
+              sx={{
+                width: "100%",
+                height: "20em",
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-around",
+                gap: "4em",
+                paddingBottom: "1rem",
+              }}
+            >
+              {/* {!!searchResults && <ResultsTable />} */}
 
-          <ResultsCard
-            title={getCardTitle(StatsCategories.NUMBER_OF_GAMES)}
-            subtitle={getSubtitle(StatsCategories.NUMBER_OF_GAMES)}
-            style={{ flex: "1 1 0px", height: "20rem" }}
-          ></ResultsCard>
-          <ResultsCard
-            title={getCardTitle(StatsCategories.MOST_PLAYED)}
-            subtitle={getSubtitle(StatsCategories.MOST_PLAYED)}
-            style={{
-              flex: "1 1 0px",
-              marginTop: "1rem",
-              height: "20rem",
-              scale: 1.2,
-            }}
-            imageUrl={getSteamContentUrl(
-              searchResults?.most_played_game?.img_icon_url
-            )}
-          ></ResultsCard>
-          <ResultsCard
-            title={getCardTitle(StatsCategories.TOTAL_PLAYTIME)}
-            subtitle={getSubtitle(StatsCategories.TOTAL_PLAYTIME)}
-            style={{ flex: "1 1 0px", height: "20rem" }}
-          ></ResultsCard>
-        </Box>
-      )}
+              <ResultsCard
+                title={getCardTitle(StatsCategories.NUMBER_OF_GAMES)}
+                subtitle={getSubtitle(StatsCategories.NUMBER_OF_GAMES)}
+                style={{ flex: "1 1 0px", height: "20rem" }}
+              ></ResultsCard>
+              <ResultsCard
+                title={getCardTitle(StatsCategories.MOST_PLAYED)}
+                subtitle={getSubtitle(StatsCategories.MOST_PLAYED)}
+                style={{
+                  flex: "1 1 0px",
+                  marginTop: "1rem",
+                  height: "20rem",
+                  scale: 1.2,
+                }}
+                imageUrl={getSteamContentUrl(
+                  searchResults?.most_played_game?.img_icon_url
+                )}
+              ></ResultsCard>
+              <ResultsCard
+                title={getCardTitle(StatsCategories.TOTAL_PLAYTIME)}
+                subtitle={getSubtitle(StatsCategories.TOTAL_PLAYTIME)}
+                style={{ flex: "1 1 0px", height: "20rem" }}
+              ></ResultsCard>
+            </Box>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </Box>
   );
 }
